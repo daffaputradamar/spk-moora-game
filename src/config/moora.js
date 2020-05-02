@@ -1,9 +1,9 @@
 const preference = [
   250000,
+  8000,
+  20000,
+  3.2,
   2000,
-  16000,
-  2,
-  1000,
   ["Windows"],
   ["Action", "Adventure"],
   ["Singleplayer", "Multiplayer"],

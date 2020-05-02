@@ -32,6 +32,20 @@ class App extends Component {
     ],
   };
 
+  handleRanking = () => {
+    const newAlternatives = this.state.alternatives.map((alternative) =>
+      Object.values(alternative)
+    );
+    const alternativesCriteria = [];
+    const alternativesTitle = newAlternatives.map((newAlt) => {
+      const [title, ...rest] = newAlt;
+      alternativesCriteria.push(rest);
+      return title;
+    });
+    console.log(alternativesTitle);
+    console.log(alternativesCriteria);
+  };
+
   handleInputChange = (index, name, value) => {
     const values = [...this.state.alternatives];
     if (name === "isVRSupported") {
@@ -118,13 +132,21 @@ class App extends Component {
               />
             );
           })}
-          <div className="text-center">
+          <div className="d-flex justify-content-between align-items-center">
             <Button color="info" outline onClick={() => this.handleAddFields()}>
               {" "}
               + Tambah Alternatif
             </Button>
+            <Button
+              className="bg-purple text-white"
+              size="lg"
+              outline
+              onClick={() => this.handleRanking()}
+            >
+              {" "}
+              Mulai Ranking
+            </Button>
           </div>
-          <pre>{JSON.stringify(this.state.alternatives, null, 2)}</pre>
         </Container>
       </Fragment>
     );
