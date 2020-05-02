@@ -1,17 +1,4 @@
-const decision = [
-  [4, 2, 2, 3],
-  [2, 4, 3, 2],
-  [3, 3, 4, 1],
-];
-
-const weight = [0.5, 0.2, 0.1, 0.2];
-
-const isBenefit = [true, true, true, false];
-
-function transpose(matrix) {
-  const newMatrix = matrix[0].map((col, i) => matrix.map((row) => row[i]));
-  return newMatrix;
-}
+const transpose = require("./transpose");
 
 function rank(arr) {
   const sorted = arr.slice().sort(function (a, b) {
