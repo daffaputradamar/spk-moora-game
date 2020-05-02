@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const cors = require("cors");
 
 const configMoora = require("./config/moora");
 const preferenceConversion = require("./lib/preferenceConversion");
@@ -8,6 +9,7 @@ const moora = require("./lib/moora");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "../client/build")));
 
@@ -16,8 +18,7 @@ app.get("/tes", (req, res) => {
 });
 
 app.post("/moora", (req, res) => {
-  console.log(req.body);
-  const decisionMatrix = preferenceConversion(input, configMoora.preference);
+  const decisionMatrix = preferenceConversion(req.body, configMoora.preference);
   const normalizedDecisionmatrix = normalize(decisionMatrix, {
     min: 0,
     max: 1,

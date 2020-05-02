@@ -1,17 +1,11 @@
 import React, { Fragment, Component } from "react";
 import "./App.css";
-import {
-  Row,
-  Col,
-  Container,
-  Button,
-  FormGroup,
-  Label,
-  Input,
-} from "reactstrap";
+import { Row, Col, Container, Button } from "reactstrap";
 import illustration from "./assets/undraw_selected_options_42hx.svg";
 import InputAlternative from "./components/InputAlternative";
-import MultiSelect from "react-multi-select-component";
+import axios from "axios";
+
+const HOST_NAME = "http://localhost:8000";
 
 class App extends Component {
   state = {
@@ -30,18 +24,34 @@ class App extends Component {
         selectedOthers: [],
       },
     ],
+    alternativesTitle: [],
   };
 
   handleRanking = () => {
-    const newAlternatives = this.state.alternatives.map((alternative) =>
+    const _newAlternatives = this.state.alternatives.map((alternative) =>
       Object.values(alternative)
     );
+
+    const newAlternatives = _newAlternatives.reduce((arrAlt, alternative) => {
+      const newArrAlt = alternative.map((alt) => {
+        if (Array.isArray(alt) && alt.length) {
+          const newAltValue = alt.map((altVal) => altVal.value);
+          return newAltValue;
+        }
+        return alt;
+      });
+      return [...arrAlt, newArrAlt];
+    }, []);
     const alternativesCriteria = [];
     const alternativesTitle = newAlternatives.map((newAlt) => {
       const [title, ...rest] = newAlt;
       alternativesCriteria.push(rest);
       return title;
     });
+    this.setState({ alternativesTitle });
+    axios
+      .post(`${HOST_NAME}/moora`, alternativesCriteria)
+      .then((res) => console.log(res));
     console.log(alternativesTitle);
     console.log(alternativesCriteria);
   };
