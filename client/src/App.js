@@ -8,13 +8,18 @@ import {
   FormGroup,
   Label,
   Input,
+  Collapse,
 } from "reactstrap";
 import illustration from "./assets/undraw_selected_options_42hx.svg";
 import InputAlternative from "./components/InputAlternative";
 import axios from "axios";
 import TableRank from "./components/TableRank";
+import TableMooraMatrix from "./components/TableMooraMatrix";
+import TablePreferensi from "./components/TablePreferensi";
 
-const HOST_NAME = "http://localhost:8000";
+const HOST_NAME = process.env.PORT
+  ? window.location.href
+  : "http://localhost:8000";
 
 class App extends Component {
   state = {
@@ -37,6 +42,7 @@ class App extends Component {
     isAutomaticallyFilled: true,
     alternativesTitle: [],
     mooraResult: {},
+    doesShowSteps: false,
   };
 
   handleRanking = () => {
@@ -279,7 +285,7 @@ class App extends Component {
                   })
                 }
               />{" "}
-              Terisi Otomatis?
+              Terisi Otomatis? (Terdapat 5 alternatif yang disediakan)
             </Label>
           </FormGroup>
           {this.state.alternatives.map((alternative, index) => {
@@ -322,20 +328,54 @@ class App extends Component {
           {Object.keys(this.state.mooraResult).length !== 0 &&
             this.state.mooraResult.constructor === Object && (
               <Fragment>
-                <h3
-                  className="text-center my-4 font-weight-bolder"
-                  id="alternatives"
-                >
-                  Ranking Alternatif
-                </h3>
                 <TableRank
+                  title="Ranking Alternatif"
                   alternatives={this.state.alternativesTitle}
                   ranked={this.state.mooraResult.ranked}
                 />
+                <Button
+                  color="success"
+                  className="mx-auto"
+                  block
+                  outline
+                  onClick={() =>
+                    this.setState({
+                      doesShowSteps: !this.state.doesShowSteps,
+                    })
+                  }
+                >
+                  {" "}
+                  Lihat Langkah - langkah
+                </Button>
+                <Collapse isOpen={this.state.doesShowSteps}>
+                  <TableMooraMatrix
+                    title="Desicion Matrix"
+                    alternatives={this.state.alternativesTitle}
+                    data={this.state.mooraResult.decisionMatrix}
+                  />
+                  <TableMooraMatrix
+                    title="Normalisasi Decision Matrix"
+                    alternatives={this.state.alternativesTitle}
+                    data={this.state.mooraResult.normalizedDecisionmatrix}
+                  />
+                  <TableMooraMatrix
+                    title="Normalisasi Moora"
+                    alternatives={this.state.alternativesTitle}
+                    data={this.state.mooraResult.mooraNormalized}
+                  />
+                  <TableMooraMatrix
+                    title="Optimisasi Moora"
+                    alternatives={this.state.alternativesTitle}
+                    data={this.state.mooraResult.optimized}
+                  />
+                  <TablePreferensi
+                    title="Preferensi"
+                    alternatives={this.state.alternativesTitle}
+                    yi={this.state.mooraResult.yi}
+                  />
+                </Collapse>
               </Fragment>
             )}
-
-          <pre>{JSON.stringify(this.state.mooraResult, null, 2)}</pre>
         </Container>
         <div className="mt-5 pt-5"></div>
         <hr />
