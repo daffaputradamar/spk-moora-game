@@ -22,7 +22,7 @@ function InputAlternative({
   const optionsPlayers = [
     { label: "Singleplayer", value: "Singleplayer" },
     { label: "Multiplayer", value: "Multiplayer" },
-    { label: "Coop", value: "Coop" },
+    { label: "Co-op", value: "Coop" },
   ];
   const optionsOthers = [
     { label: "First Person Shooter (FPS)", value: "FPS" },

@@ -29,7 +29,12 @@ app.post("/moora", (req, res) => {
     configMoora.weight,
     configMoora.isBenefit
   );
-  return res.json(mooraResult);
+  const response = {
+    decisionMatrix,
+    normalizedDecisionmatrix,
+    ...mooraResult,
+  };
+  return res.json(response);
 });
 
 app.get("*", (req, res) => {

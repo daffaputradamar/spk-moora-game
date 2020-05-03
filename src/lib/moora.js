@@ -108,7 +108,7 @@ function moora(decision, weight, isBenefit) {
 
   const altRanked = rankAlt(yi(decisionOptimized, isBenefit));
   return {
-    normalized: decisionNormalized,
+    mooraNormalized: decisionNormalized,
     optimized: decisionOptimized,
     yi: yiMat,
     ranked: altRanked,

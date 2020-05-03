@@ -46,15 +46,15 @@ const preferenceConversion = require("./src/lib/preferenceConversion");
 
 const preference = [
   250000,
+  8000,
+  20000,
+  3.2,
   2000,
-  16000,
-  2,
-  1000,
   ["Windows"],
-  ["Simulation", "Strategy", "Adventure"],
-  ["Singleplayer"],
-  false,
-  ["Building", "Management", "Sandbox"],
+  ["Action", "Adventure"],
+  ["Singleplayer", "Multiplayer"],
+  true,
+  ["FPS"],
 ];
 
 const input = [
@@ -120,7 +120,7 @@ const input = [
   ],
 ];
 
-inputAsli = [
+const inputAsli = [
   [
     799000,
     8000,
@@ -183,7 +183,7 @@ inputAsli = [
   ],
 ];
 
-const decisionMatrix = preferenceConversion(input, preference);
+const decisionMatrix = preferenceConversion(inputAsli, preference);
 const normalizedDecisionmatrix = normalize(decisionMatrix, { min: 0, max: 1 });
 // console.log(normalizedDecisionmatrix);
 const weight = [5, 3, 3, 3, 3, 3, 5, 3, 5, 3];

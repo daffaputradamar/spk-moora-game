@@ -1,30 +1,42 @@
 import React, { Fragment, Component } from "react";
 import "./App.css";
-import { Row, Col, Container, Button } from "reactstrap";
+import {
+  Row,
+  Col,
+  Container,
+  Button,
+  FormGroup,
+  Label,
+  Input,
+} from "reactstrap";
 import illustration from "./assets/undraw_selected_options_42hx.svg";
 import InputAlternative from "./components/InputAlternative";
 import axios from "axios";
+import TableRank from "./components/TableRank";
 
 const HOST_NAME = "http://localhost:8000";
 
 class App extends Component {
   state = {
-    alternatives: [
-      {
-        name: "",
-        price: 0,
-        ram: 0,
-        size: 0,
-        processor: 0,
-        vga: 0,
-        selectedOS: [],
-        selectedGenres: [],
-        selectedPlayers: [],
-        isVRSupported: false,
-        selectedOthers: [],
-      },
-    ],
+    // alternatives: [
+    //   {
+    //     name: "",
+    //     price: 0,
+    //     ram: 0,
+    //     size: 0,
+    //     processor: 0,
+    //     vga: 0,
+    //     selectedOS: [],
+    //     selectedGenres: [],
+    //     selectedPlayers: [],
+    //     isVRSupported: false,
+    //     selectedOthers: [],
+    //   },
+    // ],
+    alternatives: [],
+    isAutomaticallyFilled: true,
     alternativesTitle: [],
+    mooraResult: {},
   };
 
   handleRanking = () => {
@@ -48,12 +60,11 @@ class App extends Component {
       alternativesCriteria.push(rest);
       return title;
     });
+    console.log(alternativesCriteria);
     this.setState({ alternativesTitle });
     axios
       .post(`${HOST_NAME}/moora`, alternativesCriteria)
-      .then((res) => console.log(res));
-    console.log(alternativesTitle);
-    console.log(alternativesCriteria);
+      .then((res) => this.setState({ mooraResult: res.data }));
   };
 
   handleInputChange = (index, name, value) => {
@@ -68,19 +79,141 @@ class App extends Component {
 
   handleAddFields = () => {
     const values = [...this.state.alternatives];
-    values.push({
-      name: "",
-      price: 0,
-      ram: 0,
-      size: 0,
-      processor: 0,
-      vga: 0,
-      selectedOS: [],
-      selectedGenres: [],
-      selectedPlayers: [],
-      isVRSupported: false,
-      selectedOthers: [],
-    });
+    if (!this.state.isAutomaticallyFilled) {
+      values.push({
+        name: "",
+        price: null,
+        ram: null,
+        size: null,
+        processor: null,
+        vga: null,
+        selectedOS: [],
+        selectedGenres: [],
+        selectedPlayers: [],
+        isVRSupported: false,
+        selectedOthers: [],
+      });
+    } else {
+      switch (this.state.alternatives.length) {
+        case 0:
+          values.push({
+            name: "DOOM ETERNAL",
+            price: 799000,
+            ram: 8000,
+            size: 50000,
+            processor: 3.3,
+            vga: 4000,
+            selectedOS: [{ label: "Windows", value: "Windows" }],
+            selectedGenres: [{ label: "Action", value: "Action" }],
+            selectedPlayers: [
+              { label: "Singleplayer", value: "Singleplayer" },
+              { label: "Multiplayer", value: "Multiplayer" },
+            ],
+            isVRSupported: false,
+            selectedOthers: [
+              { label: "First Person Shooter (FPS)", value: "FPS" },
+            ],
+          });
+          break;
+        case 1:
+          values.push({
+            name: "HALF LIFE: ALYX",
+            price: 249999,
+            ram: 12000,
+            size: 67000,
+            processor: 3.2,
+            vga: 6000,
+            selectedOS: [{ label: "Windows", value: "Windows" }],
+            selectedGenres: [
+              { label: "Action", value: "Action" },
+              { label: "Adventure", value: "Adventure" },
+            ],
+            selectedPlayers: [{ label: "Singleplayer", value: "Singleplayer" }],
+            isVRSupported: true,
+            selectedOthers: [
+              { label: "First Person Shooter (FPS)", value: "FPS" },
+            ],
+          });
+          break;
+        case 2:
+          values.push({
+            name: "RESIDENT EVIL 3 REMAKE",
+            price: 824999,
+            ram: 8000,
+            size: 45000,
+            processor: 3.2,
+            vga: 2000,
+            selectedOS: [{ label: "Windows", value: "Windows" }],
+            selectedGenres: [
+              { label: "Action", value: "Action" },
+              { label: "Horror", value: "Horror" },
+            ],
+            selectedPlayers: [
+              { label: "Singleplayer", value: "Singleplayer" },
+              { label: "Multiplayer", value: "Multiplayer" },
+              { label: "Co-op", value: "Coop" },
+            ],
+            isVRSupported: false,
+            selectedOthers: [
+              { label: "Third Person Shooter (TPS)", value: "TPS" },
+              { label: "Gore", value: "Gore" },
+            ],
+          });
+          break;
+        case 3:
+          values.push({
+            name: "ORI AND THE WILL OF THE WISPS",
+            price: 139999,
+            ram: 8000,
+            size: 20000,
+            processor: 3.2,
+            vga: 2000,
+            selectedOS: [{ label: "Windows", value: "Windows" }],
+            selectedGenres: [
+              { label: "Action", value: "Action" },
+              { label: "Adventure", value: "Adventure" },
+            ],
+            selectedPlayers: [{ label: "Singleplayer", value: "Singleplayer" }],
+            isVRSupported: false,
+            selectedOthers: [
+              { label: "2D Side Scroller", value: "2D Side Scroller" },
+            ],
+          });
+          break;
+        case 4:
+          values.push({
+            name: "BLEEDING EDGE",
+            price: 139999,
+            ram: 8000,
+            size: 15000,
+            processor: 3.2,
+            vga: 2000,
+            selectedOS: [{ label: "Windows", value: "Windows" }],
+            selectedGenres: [{ label: "Action", value: "Action" }],
+            selectedPlayers: [{ label: "Multiplayer", value: "Multiplayer" }],
+            isVRSupported: false,
+            selectedOthers: [
+              { label: "Third Person Shooter (TPS)", value: "TPS" },
+            ],
+          });
+          break;
+        default:
+          values.push({
+            name: "",
+            price: null,
+            ram: null,
+            size: null,
+            processor: null,
+            vga: null,
+            selectedOS: [],
+            selectedGenres: [],
+            selectedPlayers: [],
+            isVRSupported: false,
+            selectedOthers: [],
+          });
+          break;
+      }
+    }
     this.setState({ alternatives: values });
   };
 
@@ -128,9 +261,27 @@ class App extends Component {
             </Col>
           </Row>
           <hr />
-          <h3 className="text-center mt-4 font-weight-bolder" id="alternatives">
+          <h3
+            className="text-center mt-4 mb-3 font-weight-bolder"
+            id="alternatives"
+          >
             Masukkan Alternatif
           </h3>
+          <FormGroup check className="mb-4 text-center">
+            <Label check>
+              <Input
+                type="checkbox"
+                name="isAutomaticallyFilled"
+                checked={this.state.isAutomaticallyFilled}
+                onChange={(e) =>
+                  this.setState({
+                    isAutomaticallyFilled: !this.state.isAutomaticallyFilled,
+                  })
+                }
+              />{" "}
+              Terisi Otomatis?
+            </Label>
+          </FormGroup>
           {this.state.alternatives.map((alternative, index) => {
             return (
               <InputAlternative
@@ -143,6 +294,15 @@ class App extends Component {
             );
           })}
           <div className="d-flex justify-content-between align-items-center">
+            <Button
+              className="invisible"
+              color="info"
+              outline
+              onClick={() => this.handleAddFields()}
+            >
+              {" "}
+              + Tambah Alternatif
+            </Button>
             <Button color="info" outline onClick={() => this.handleAddFields()}>
               {" "}
               + Tambah Alternatif
@@ -152,12 +312,34 @@ class App extends Component {
               size="lg"
               outline
               onClick={() => this.handleRanking()}
+              disabled={this.state.alternatives.length < 2}
             >
               {" "}
               Mulai Ranking
             </Button>
           </div>
+          <hr />
+          {Object.keys(this.state.mooraResult).length !== 0 &&
+            this.state.mooraResult.constructor === Object && (
+              <Fragment>
+                <h3
+                  className="text-center my-4 font-weight-bolder"
+                  id="alternatives"
+                >
+                  Ranking Alternatif
+                </h3>
+                <TableRank
+                  alternatives={this.state.alternativesTitle}
+                  ranked={this.state.mooraResult.ranked}
+                />
+              </Fragment>
+            )}
+
+          <pre>{JSON.stringify(this.state.mooraResult, null, 2)}</pre>
         </Container>
+        <div className="mt-5 pt-5"></div>
+        <hr />
+        <h6 className="text-center text-muted my-4">&copy; Daffa Akbar 2020</h6>
       </Fragment>
     );
   }
