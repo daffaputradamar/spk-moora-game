@@ -17,9 +17,7 @@ import TableRank from "./components/TableRank";
 import TableMooraMatrix from "./components/TableMooraMatrix";
 import TablePreferensi from "./components/TablePreferensi";
 
-const HOST_NAME = process.env.PORT
-  ? window.location.href
-  : "http://localhost:8000";
+const HOST_NAME = "https://daffa-spk-moora.herokuapp.com";
 
 class App extends Component {
   state = {
